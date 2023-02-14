@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>API Furniture</title>
+  <style>
+    #container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+      /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+      gap: 0.5rem;
+      font-size: 20px;
+    }
+
+    .item {
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      row-gap: 0.5rem;
+      color: #9b5c41;
+      font-size: 20px;
+      display: flex;
+    /* text-align: center; */
+      flex-direction: column-reverse;
+    }
+
+
+    img {
+      width: 60%;
+      margin: auto 20%;
+      display: block;
+      object-fit: contain;
+    }
+
+
+
+    img:hover {
+      transform: scale(1.1);
+      transition: 0.8s all;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Scroll Tap -->
+  <a href="#home" class="scroll-top"><i class="fa-solid fa-arrow-up"></i></a>
+  <!-- Start Header -->
+  <header>
+    <div class="nav container">
+
+      <a href="#" class="logo">
+        Furn<span>.</span>
+      </a>
+      <!-- Navbar -->
+      <div class="nav-icons">
+        <i class="icon fa-solid fa-cart-shopping" id="cart" onclick="toggle()"></i>
+
+      </div>
+
+
+  </header>
+  <!-- End Header -->
+
+  <!-- Start Home -->
+  <section class="home container" id="home">
+    <div class="home-text">
+      <h1>
+        <span>Modern Furniture</span>
+        <br>
+        For Your House
+      </h1>
+      <p>
+        We Understand your need for home decor
+        <br>
+        with unique decorative accessories.
+      </p>
+      <button class="btn" onclick="login()">Shop More</button>
+      <!-- <a href="" class="btn" >Shop More</a> -->
+    </div>
+    <!-- Home Image -->
+    <div class="home-img">
+      <img src="/img/Sofa.png" alt="">
+    </div>
+  </section>
+  <!-- End Home -->
+  <div class="box" id="container"></div>
+  <!-- Start Footer -->
+  <section class="footer container">
+    <div class="footer-box">
+      <h3>The Company</h3>
+      <a href="#">About Us</a>
+      <a href="#">Help</a>
+      <a href="#">Blog</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div class="footer-box">
+      <h3>Popular Categories</h3>
+      <a href="#">Bedroom</a>
+      <a href="#">Living Rooms</a>
+      <a href="#">Outdoor</a>
+      <a href="#">Kitchen</a>
+    </div>
+    <div class="footer-box">
+      <h3>More Information</h3>
+      <a href="#">Shopping</a>
+      <a href="#">Delivery & Returns</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Sitemap</a>
+    </div>
+    <div class="footer-box">
+      <h3>Social</h3>
+      <div class="social">
+        <a href="#"><i class="icon fa-brands fa-facebook"></i></a>
+        <a href="#"><i class="icon fa-brands fa-twitter"></i></a>
+        <a href="#"><i class="icon fa-brands fa-instagram"></i></a>
+      </div>
+    </div>
+  </section>
+  <!-- End Footer -->
+  <!-- CopyRight -->
+  <div class="copyright">
+    <p>&#169; ITI All Right Reserved</p>
+  </div>
+
+
+
+
+
+  <script src="./main.js"></script>
+  <!-- <center>
+  <input type="text" id="p"> <button class="btn" onclick="getProductById()">search</button>
+  </center> -->
+
+  <script>
+    var divContainer = document.getElementById("container")
+
+    function getProducts() {
+
+      var xhr = new XMLHttpRequest()
+
+
+      xhr.open("get", "./furniture.json")
+
+
+      xhr.addEventListener("readystatechange", function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+          var resDataJSON = xhr.response
+
+          var resData = JSON.parse(resDataJSON)
+
+          for (var i = 0; i < 32; i++) {
+
+            displayProd(resData[i])
+
+          }
+
+
+
+        }
+
+      })
+
+      xhr.send()
+
+    }
+    getProducts()
+
+    function getProductById() {
+      var input = document.getElementById("p")
+
+      var xhr = new XMLHttpRequest()
+      xhr.open("get", "https://mocki.io/v1/2748bb77-aa86-486b-964b-a594bd67a78f" + input.value)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+          var resDataJSON = xhr.response
+          var response = JSON.parse(resDataJSON)
+          console.log(response);
+          displaysearchProd(response)
+        }
+      }
+      xhr.send()
+    }
+
+    function displayProd(p) {
+      let category = p.category
+      let price = p.price
+      let name = p.name
+      let thumbnail = p.thumbnail
+
+
+      var divPrd = document.createElement("div")
+      divPrd.innerHTML += category + "<br>" + name + "<br>" + price + "<br>" + "<img src='" + thumbnail +
+        "'>"
+      divPrd.setAttribute("class", "item", "class", "box")
+      divContainer.append(divPrd)
+    }
+
+    // function displaysearchProd(p) {
+    //   let category = p.category
+    //   let price = p.price
+    //   let name = p.name
+    //   let thumbnail = p.thumbnail
+
+
+    //   var divPrd = document.createElement("div")
+    //   divPrd.innerHTML += category + "<br>"+ name + "<br>" + price + "<br>" + "<img src='" + thumbnail +
+    //     "'>"
+    //   divPrd.setAttribute("class", "item")
+    //   divContainer.append(divPrd)
+    // }
+  </script>
+</body>
+
+</html>
